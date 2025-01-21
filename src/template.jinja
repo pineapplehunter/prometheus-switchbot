@@ -1,0 +1,13 @@
+# HELP probe_duration_seconds Returns how long the probe took to complete in seconds
+# TYPE probe_duration_seconds gauge
+probe_duration_seconds {{duration}}
+
+api_request_status_code {{request_status}}
+
+api_status_code {{api_status_code}}
+
+api_body_power             {device_name="{{name}}",version="{{version}}",device_type="{{device_type}}",hub_device_id="{{hub_device_id}}"} {{power}}
+api_body_voltage           {device_name="{{name}}",version="{{version}}",device_type="{{device_type}}",hub_device_id="{{hub_device_id}}"} {{voltage}}
+api_body_weight            {device_name="{{name}}",version="{{version}}",device_type="{{device_type}}",hub_device_id="{{hub_device_id}}"} {{weight}}
+api_body_electricity_of_day{device_name="{{name}}",version="{{version}}",device_type="{{device_type}}",hub_device_id="{{hub_device_id}}"} {{electricity_of_day}}
+api_body_electric_current  {device_name="{{name}}",version="{{version}}",device_type="{{device_type}}",hub_device_id="{{hub_device_id}}"} {{electric_current}}
