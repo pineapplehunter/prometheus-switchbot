@@ -19,12 +19,11 @@ def read_root():
 
 
 def make_request(uri: str, **kwargs):
-    # Declare empty header dictionary
     apiHeader = {}
-    # open token
-    token = "f6c1d424342ed7ecb0ba1b8753abd2abac90fef6da03a72921066dcb5969a4e17b91b0dfd643505bb070612c87a92da0"  # copy and paste from the SwitchBot app V6.14 or later
-    # secret key
-    secret = "14973292aaa72b3a56700cc83f64121e"  # copy and paste from the SwitchBot app V6.14 or later
+    token = os.environ.get("SWITCHBOT_TOKEN")
+    secret = os.environ.get("SWITCHBOT_SECRET")
+    if not token or not secret:
+        raise ValueError("SWITCHBOT_TOKEN and SWITCHBOT_SECRET must be set")
     nonce = uuid.uuid4()
     t = int(round(time.time() * 1000))
     string_to_sign = "{}{}{}".format(token, t, nonce)

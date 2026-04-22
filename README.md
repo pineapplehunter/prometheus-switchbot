@@ -16,18 +16,20 @@ A Prometheus exporter for SwitchBot smart plugs that exposes device metrics (pow
 
 ## Configuration
 
-Set the following credentials in `src/main.py`:
+Set the following environment variables:
 
-```python
-token = "your_open_token"
-secret = "your_secret_key"
-```
+| Variable | Description |
+|---------|-------------|
+| `SWITCHBOT_TOKEN` | Open token from SwitchBot app V6.14+ |
+| `SWITCHBOT_SECRET` | Secret key from SwitchBot app V6.14+ |
 
 ## Usage
 
 ### Running Directly
 
-```python
+```bash
+export SWITCHBOT_TOKEN="your_open_token"
+export SWITCHBOT_SECRET="your_secret_key"
 uvicorn src.main:app --host 0.0.0.0 --port 8000
 ```
 
@@ -35,7 +37,23 @@ uvicorn src.main:app --host 0.0.0.0 --port 8000
 
 ```bash
 docker pull ghcr.io/pineapplehunter/prometheus-switchbot:latest
-docker run -p 8000:8000 ghcr.io/pineapplehunter/prometheus-switchbot:latest
+docker run -p 8000:8000 \
+  -e SWITCHBOT_TOKEN="your_token" \
+  -e SWITCHBOT_SECRET="your_secret" \
+  ghcr.io/pineapplehunter/prometheus-switchbot:latest
+```
+
+### Running with Docker Compose
+
+```yaml
+services:
+  switchbot-exporter:
+    image: ghcr.io/pineapplehunter/prometheus-switchbot:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - SWITCHBOT_TOKEN=your_token
+      - SWITCHBOT_SECRET=your_secret
 ```
 
 ### Running with Nix Flakes
