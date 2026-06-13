@@ -58,7 +58,6 @@ for d in res_json["body"]["deviceList"]:
     device_id_name_map[d["deviceId"]] = d["deviceName"]
 
 
-
 @app.get("/metrics")
 def read_item(target: str = ""):
     duration = time.time()

@@ -3,6 +3,10 @@
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
   inputs.flake-parts.url = "github:hercules-ci/flake-parts";
+  inputs.treefmt-nix = {
+    url = "github:numtide/treefmt-nix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   outputs =
     { flake-parts, ... }@inputs:
@@ -60,7 +64,12 @@
           };
 
           # Use nixfmt for all nix files
-          formatter = pkgs.nixfmt-tree;
+          formatter =
+            (inputs.treefmt-nix.lib.evalModule pkgs {
+              projectRootFile = "flake.nix";
+              programs.ruff-format.enable = true;
+              programs.nixfmt.enable = true;
+            }).config.build.wrapper;
         };
     };
 }
