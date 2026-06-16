@@ -18,12 +18,20 @@ def read_root():
     return {"Hello": "World"}
 
 
+def read_secret(env_var: str, file_env_var: str) -> str | None:
+    file_path = os.environ.get(file_env_var)
+    if file_path:
+        with open(file_path) as f:
+            return f.read().strip()
+    return os.environ.get(env_var)
+
+
 def make_request(uri: str, **kwargs):
     apiHeader = {}
-    token = os.environ.get("SWITCHBOT_TOKEN")
-    secret = os.environ.get("SWITCHBOT_SECRET")
+    token = read_secret("SWITCHBOT_TOKEN", "SWITCHBOT_TOKEN_FILE")
+    secret = read_secret("SWITCHBOT_SECRET", "SWITCHBOT_SECRET_FILE")
     if not token or not secret:
-        raise ValueError("SWITCHBOT_TOKEN and SWITCHBOT_SECRET must be set")
+        raise ValueError("SWITCHBOT_TOKEN/SWITCHBOT_TOKEN_FILE and SWITCHBOT_SECRET/SWITCHBOT_SECRET_FILE must be set")
     nonce = uuid.uuid4()
     t = int(round(time.time() * 1000))
     string_to_sign = "{}{}{}".format(token, t, nonce)
